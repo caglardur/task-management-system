@@ -2,7 +2,7 @@ import DetailTask from "./DetailTask"
 
 const SingleTask = ({ task }) => {
   const taskStatus = ["Pending", "Completed", "Rejected"]
-  const depertures = ["İnsan Kaynakları Departmanı", "Satış Departmanı", "Pazarlama Departmanı"]
+  const departments = ["Human Resources Department", "Sales Department", "Marketing Department"]
 
   return (
     <div className="col mt-4 bg-white rounded-3 border shadow-sm p-2 align-items-center">
@@ -20,7 +20,7 @@ const SingleTask = ({ task }) => {
           <div className="col text-secondary fst-italic" style={{ fontSize: "12px" }}>
             assigned
           </div>
-          <div className="col">{depertures[task.assignedDepartment - 1]}</div>
+          <div className="col">{departments[task.assignedDepartment - 1]}</div>
         </div>
         <div className="col d-none d-sm-none d-md-none d-lg-block">
           <div className="col text-secondary fst-italic" style={{ fontSize: "12px" }}>

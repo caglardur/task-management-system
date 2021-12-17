@@ -5,8 +5,10 @@ import { useParams, useNavigate } from "react-router-dom"
 const CreateTask = () => {
   const user = useSelector(state => state.user.value)
   const navigate = useNavigate()
-  const [task, setTask] = useState(null)
+  const [task, setTask] = useState(false)
   let taskId = useParams().taskId
+
+  const departments = ["Human Resources Department", "Sales Department", "Marketing Department"]
 
   useEffect(() => {
     if (taskId) {
@@ -18,8 +20,10 @@ const CreateTask = () => {
       })
         .then(response => response.json())
         .then(data => setTask(data.payload))
+    } else {
+      setTask(false)
     }
-  }, [taskId])
+  }, [taskId, user])
 
   const createTaskFormHandler = async e => {
     e.preventDefault()
@@ -34,7 +38,7 @@ const CreateTask = () => {
         body: JSON.stringify({
           title: e.target.titleInput.value,
           description: e.target.descriptionInput.value,
-          assignedDepartment: parseInt(e.target.assignedDepartmentInput.value)
+          assignedDepartment: !task ? parseInt(e.target.assignedDepartmentInput.value) : null
         }),
         withCredentials: false
       })
@@ -46,13 +50,14 @@ const CreateTask = () => {
   }
   return (
     <div className="col">
-      <form className="col-lg-7 col-md-10 col-sm mx-auto" onSubmit={createTaskFormHandler}>
+      <div className="col text-center fs-5">{task ? "Edit Task" : "Add Task"}</div>
+      <form className="col-lg-7 col-md-10 col-sm mx-auto mt-3" onSubmit={createTaskFormHandler}>
         <div className="mb-3 row">
           <label htmlFor="titleInput" className="col-sm-1 col-form-label text-secondary fst-italic">
             title:
           </label>
           <div className="col-sm">
-            <input type="text" className="form-control" id="titleInput" defaultValue={task ? task.title : ""} />
+            <input type="text" className="form-control" id="titleInput" defaultValue={task ? task.title : ""} required />
           </div>
         </div>
         <div className="mb-3 row">
@@ -60,21 +65,25 @@ const CreateTask = () => {
             desc.:
           </label>
           <div className="col-sm">
-            <textarea type="text" className="form-control" id="descriptionInput" defaultValue={task ? task.description : ""} />
+            <textarea type="text" className="form-control" id="descriptionInput" defaultValue={task ? task.description : ""} required />
           </div>
         </div>
-        <div className="mb-3 row">
+        <div className="mb-3 row align-items-center">
           <label htmlFor="descriptionInput" className="col-sm-1 col-form-label text-secondary fst-italic">
             to:
           </label>
-          <div className="col-sm-auto mb-3">
-            <select className="form-select" aria-label="Default select example" id="assignedDepartmentInput" value={task && task.assignedDepartment} style={{ pointerEvents: task && "none", color: task && "grey" }}>
-              <option value={0}>Select a department</option>
-              <option value={1}>Human Resources</option>
-              <option value={2}>Sales</option>
-              <option value={3}>Marketing</option>
-            </select>
-          </div>
+          {task ? (
+            <div className="col-sm-auto">{departments[task.assignedDepartment - 1]}</div>
+          ) : (
+            <div className="col-sm-auto">
+              <select className="form-select" aria-label="Default select example" id="assignedDepartmentInput" required>
+                <option value={1}>HR Department</option>
+                <option value={2}>Sales Department</option>
+                <option value={3}>Marketing Department</option>
+              </select>
+            </div>
+          )}
+
           <div className="col text-end">
             <button type="submit" className="btn btn-primary">
               Submit

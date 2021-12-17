@@ -18,7 +18,13 @@ const DepTasksList = () => {
           "Content-Type": "application/json"
         }
       })
-        .then(response => response.json())
+        .then(response => {
+          if (response.ok) {
+            return response.json()
+          } else {
+            return localStorage.removeItem("userData")
+          }
+        })
         .then(data => setDepTasks(data.payload))
     } else {
       dispatch(removeUser())
@@ -28,7 +34,7 @@ const DepTasksList = () => {
   return (
     <div className="col">
       <div className="col fs-4 fw-bold">Department Tasks</div>
-      <List data={depTasks} />
+      {depTasks && depTasks.length > 0 ? <List data={depTasks} /> : <div className="col text-center my-3 fst-italic">Tasks not found.</div>}
     </div>
   )
 }

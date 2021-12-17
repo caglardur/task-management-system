@@ -18,7 +18,13 @@ const MyTasksList = () => {
           "Content-Type": "application/json"
         }
       })
-        .then(response => response.json())
+        .then(response => {
+          if (response.ok) {
+            return response.json()
+          } else {
+            return localStorage.removeItem("userData")
+          }
+        })
         .then(data => setMyTask(data.payload))
     } else {
       dispatch(removeUser())
@@ -28,7 +34,7 @@ const MyTasksList = () => {
   return (
     <div className="col">
       <div className="col fs-4 fw-bold">My Tasks</div>
-      {myTask && myTask.length > 0 ? <List data={myTask} /> : <div className="col text-center my-3 fst-italic">Task not found</div>}
+      {myTask && myTask.length > 0 ? <List data={myTask} /> : <div className="col text-center my-3 fst-italic">Tasks not found.</div>}
     </div>
   )
 }

@@ -1,12 +1,9 @@
-import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 
 import { setUser } from "../redux/UserReducer"
 
 const Login = () => {
   const dispatch = useDispatch()
-  const userData = localStorage.getItem("userData")
-
 
   const loginFormHandler = async e => {
     e.preventDefault()
@@ -22,18 +19,26 @@ const Login = () => {
         }),
         withCredentials: false
       })
-        .then(response => response.json())
-        .then(data => {
-          if (data.code === "validationError") {
-            return console.log(data.message)
+        .then(response => {
+          if (response.ok) {
+            return response.json()
           } else {
-            localStorage.setItem("userData", JSON.stringify(data.payload))
-            return dispatch(setUser(data.payload))
+            return validationEmail()
           }
+        })
+        .then(data => {
+          localStorage.setItem("userData", JSON.stringify(data.payload))
+          return dispatch(setUser(data.payload))
         })
     } catch (err) {
       console.log(err)
     }
+  }
+
+  const validationEmail = () => {
+    console.log("burada")
+    const emailInputValid = document.getElementById("emailInput")
+    emailInputValid.classList.add("is-invalid")
   }
 
   return (
@@ -44,7 +49,8 @@ const Login = () => {
           <label htmlFor="emailInput" className="form-label">
             Email:
           </label>
-          <input type="text" className="form-control form-control-sm" id="emailInput" />
+          <input type="email" className="form-control form-control-sm" id="emailInput" required />
+          <div className="invalid-feedback">Email address not found</div>
         </div>
         <button type="submit" className="btn btn-sm btn-primary bg-gradient fw-bold mb-3">
           Login
