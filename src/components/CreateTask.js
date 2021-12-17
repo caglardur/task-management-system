@@ -24,8 +24,6 @@ const CreateTask = () => {
   const createTaskFormHandler = async e => {
     e.preventDefault()
 
-    console.log(typeof e.target.assignedDepartmentInput.value)
-
     try {
       await fetch(task ? "http://localhost:5000/api/task/" + taskId : "http://localhost:5000/api/task", {
         method: task ? "PUT" : "POST",

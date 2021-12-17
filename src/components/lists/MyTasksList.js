@@ -28,7 +28,7 @@ const MyTasksList = () => {
   return (
     <div className="col">
       <div className="col fs-4 fw-bold">My Tasks</div>
-      <List data={myTask} />
+      {myTask && myTask.length > 0 ? <List data={myTask} /> : <div className="col text-center my-3 fst-italic">Task not found</div>}
     </div>
   )
 }

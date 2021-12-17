@@ -7,10 +7,32 @@ import { refresh } from "../../redux/RefreshReducer"
 import TaskLog from "./TaskLogs"
 
 const DetailTask = ({ taskId }) => {
-  const [task, setTask] = useState(false)
   const user = useSelector(state => state.user.value)
-
   const dispatch = useDispatch()
+  const [task, setTask] = useState(false)
+  const [responsive, setResponsive] = useState(false)
+  const [responseButton, setResponseButton] = useState(false)
+  const [editable, setEditable] = useState(false)
+
+  useEffect(() => {
+    if (user && task) {
+      if (task.status === 0) {
+        setResponsive(true)
+      } else {
+        setResponsive(false)
+      }
+      if (user.department === task.assignedDepartment) {
+        setResponseButton(true)
+      } else {
+        setResponseButton(false)
+      }
+      if (user.id === task.user.id) {
+        setEditable(true)
+      } else {
+        setEditable(false)
+      }
+    }
+  }, [user, task])
 
   useEffect(() => {
     if (user && user.jwtToken) {
@@ -21,7 +43,7 @@ const DetailTask = ({ taskId }) => {
         }
       })
         .then(response => response.json())
-        .then(data => setTask(data.payload))
+        .then(data => setTask({ ...data.payload }))
     } else {
       dispatch(removeUser())
     }
@@ -52,13 +74,32 @@ const DetailTask = ({ taskId }) => {
         }
       })
         .then(response => response.json())
-        .then(() => dispatch(refresh()))
+        .then(() => {
+          setResponsive(false)
+          dispatch(refresh())
+        })
     } catch (err) {
       console.log(err)
     }
   }
 
-  console.log(task)
+  const rejectTaskHandler = () => {
+    try {
+      fetch("http://localhost:5000/api/task/reject/" + taskId, {
+        headers: {
+          Authorization: "Bearer " + user.jwtToken,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(response => response.json())
+        .then(() => {
+          setResponsive(false)
+          dispatch(refresh())
+        })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <div className="col">
@@ -81,30 +122,47 @@ const DetailTask = ({ taskId }) => {
             ))}
         </div>
       </div>
-      <div className="row p-3">
-        {user && task && user.id === task.user.id && (
-          <div className="col-auto">
-            <Link to={`/addtask/${taskId}`}>
-              <button type="button" className="btn btn-sm btn-outline-primary">
-                Edit
-              </button>
-            </Link>
+      <div className="row p-3 d-flex justify-content-between">
+        <div className="col">
+          <div className="row">
+            {editable && (
+              <div className="col-auto">
+                <Link to={`/addtask/${taskId}`}>
+                  <button type="button" className="btn btn-sm btn-outline-primary bg-gradient">
+                    Edit
+                  </button>
+                </Link>
+              </div>
+            )}
+            {editable && (
+              <div className="col-auto">
+                <button type="button" className="btn btn-sm btn-danger bg-gradient" onClick={deleteTaskHandler}>
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
-        )}
-        {user && task && user.id === task.user.id && (
-          <div className="col-auto">
-            <button type="button" className="btn btn-sm btn-danger" onClick={deleteTaskHandler}>
-              Delete
-            </button>
-          </div>
-        )}
-        {user && task && user.department === task.assignedDepartment && (
-          <div className="col-auto">
-            <button type="button" className="btn btn-sm btn-success" onClick={complateTaskHandler}>
-              Complated
-            </button>
-          </div>
-        )}
+        </div>
+        <div className="col">
+          {responsive && (
+            <div className="row float-end">
+              {responseButton && (
+                <div className="col-auto">
+                  <button type="button" className="btn btn-sm btn-success bg-gradient" onClick={complateTaskHandler}>
+                    Complate
+                  </button>
+                </div>
+              )}
+              {responseButton && (
+                <div className="col-auto">
+                  <button type="button" className="btn btn-sm btn-danger bg-gradient" onClick={rejectTaskHandler}>
+                    Reject
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

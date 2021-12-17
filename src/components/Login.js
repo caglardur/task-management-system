@@ -1,9 +1,12 @@
+import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 
 import { setUser } from "../redux/UserReducer"
 
 const Login = () => {
   const dispatch = useDispatch()
+  const userData = localStorage.getItem("userData")
+
 
   const loginFormHandler = async e => {
     e.preventDefault()
@@ -24,6 +27,7 @@ const Login = () => {
           if (data.code === "validationError") {
             return console.log(data.message)
           } else {
+            localStorage.setItem("userData", JSON.stringify(data.payload))
             return dispatch(setUser(data.payload))
           }
         })

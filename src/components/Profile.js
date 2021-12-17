@@ -33,7 +33,14 @@ const Profile = () => {
           <div className="col-auto">
             <div className="col-auto">
               Hi, {userDetail.name}
-              <i type="button" className="bi bi-box-arrow-right ms-2 text-danger" onClick={() => dispatch(removeUser())}></i>
+              <i
+                type="button"
+                className="bi bi-box-arrow-right ms-2 text-danger"
+                onClick={() => {
+                  localStorage.removeItem("userData")
+                  dispatch(removeUser())
+                }}
+              ></i>
             </div>
             <div className="col-auto" style={{ fontSize: "14px" }}>
               {userDetail.title}

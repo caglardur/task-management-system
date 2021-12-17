@@ -6,6 +6,7 @@ import List from "./List"
 
 const AllTasksList = () => {
   const [allTask, setAllTask] = useState(null)
+  const [checked, setChecked] = useState([0, 1, 2])
   const user = useSelector(state => state.user.value)
   const refresh = useSelector(state => state.refresh.value)
   const dispatch = useDispatch()
@@ -18,7 +19,13 @@ const AllTasksList = () => {
           "Content-Type": "application/json"
         }
       })
-        .then(response => response.json())
+        .then(response => {
+          if (response.ok) {
+            return response.json()
+          } else {
+            return localStorage.removeItem("userData")
+          }
+        })
         .then(data => setAllTask(data.payload))
     } else {
       dispatch(removeUser())
@@ -28,6 +35,26 @@ const AllTasksList = () => {
   return (
     <div className="col">
       <div className="col fs-4 fw-bold">All Tasks</div>
+      <div className="col mt-2" style={{ fontSize: "14px" }}>
+        <div className="form-check form-check-inline">
+          <input className="form-check-input" type="checkbox" id="pendingCheckbox" defaultValue={0} checked onChange={() => setChecked()} />
+          <label className="form-check-label" htmlFor="pendingCheckbox">
+            Pending
+          </label>
+        </div>
+        <div className="form-check form-check-inline">
+          <input className="form-check-input" type="checkbox" id="complatedCheckbox" defaultValue={1} checked />
+          <label className="form-check-label" htmlFor="complatedCheckbox">
+            Complated
+          </label>
+        </div>
+        <div className="form-check form-check-inline">
+          <input className="form-check-input" type="checkbox" id="rejectedCheckbox" defaultValue={2} checked />
+          <label className="form-check-label" htmlFor="rejectedCheckbox">
+            Rejected
+          </label>
+        </div>
+      </div>
       <List data={allTask} />
     </div>
   )
