@@ -24,3 +24,5 @@ Projeyi çalıştırmak için aşağıdaki komutu terminalinize yazın.
 ```bash
 npm start
 ```
+
+## Kullanılan Paketler

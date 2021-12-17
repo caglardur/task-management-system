@@ -36,7 +36,6 @@ const Login = () => {
   }
 
   const validationEmail = () => {
-    console.log("burada")
     const emailInputValid = document.getElementById("emailInput")
     emailInputValid.classList.add("is-invalid")
   }
