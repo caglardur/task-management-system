@@ -1,22 +1,39 @@
-import { useState } from "react"
 import DetailTask from "./DetailTask"
 
 const SingleTask = ({ task }) => {
-  const [showDetail, setShowDetail] = useState(false)
   const taskStatus = ["Pending", "Completed", "Rejected"]
   const depertures = ["İnsan Kaynakları Departmanı", "Satış Departmanı", "Pazarlama Departmanı"]
 
   return (
-    <div className="col mt-4">
-      <div className="col">Title: {task.title}</div>
-      <div className="col">Description: {task.description}</div>
-      <div className="col">Status: {taskStatus[task.status]}</div>
-      <div className="col">Assigned Department: {depertures[task.assignedDepartment - 1]}</div>
-      <div className="col">Creator: {task.user.name}</div>
-      <button type="button" className="btn btn-sm btn-primary" onClick={() => setShowDetail(!showDetail)}>
-        Detail
-      </button>
-      {showDetail && <DetailTask taskId={task.id} />}
+    <div className="col mt-4 bg-white rounded-3 border shadow-sm p-2 align-items-center">
+      <div type="button" className="row align-items-center" data-bs-toggle="collapse" data-bs-target={`#id${task.id}`} aria-expanded="false" data-bs-parent="#myGroup">
+        <div className="col text-center" style={{ maxWidth: "90px" }}>
+          <span className={task.status === 0 ? "badge rounded-pill bg-warning text-dark" : task.status === 1 ? "badge rounded-pill bg-success" : "badge rounded-pill bg-danger"}>{taskStatus[task.status]}</span>
+        </div>
+        <div className="col">
+          <div className="col text-secondary fst-italic" style={{ fontSize: "12px" }}>
+            title
+          </div>
+          <div className="col">{task.title}</div>
+        </div>
+        <div className="col">
+          <div className="col text-secondary fst-italic" style={{ fontSize: "12px" }}>
+            assigned
+          </div>
+          <div className="col">{depertures[task.assignedDepartment - 1]}</div>
+        </div>
+        <div className="col d-none d-sm-none d-md-none d-lg-block">
+          <div className="col text-secondary fst-italic" style={{ fontSize: "12px" }}>
+            created
+          </div>
+          <div className="col">{task.user.name}</div>
+        </div>
+      </div>
+      <div className="col">
+        <div className="collapse" id={`id${task.id}`}>
+          <DetailTask taskId={task.id} />
+        </div>
+      </div>
     </div>
   )
 }

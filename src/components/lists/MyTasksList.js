@@ -2,11 +2,12 @@ import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import { removeUser } from "../../redux/UserReducer"
-import SingleTask from "../single/SingleTask"
+import List from "./List"
 
 const MyTasksList = () => {
   const [myTask, setMyTask] = useState(null)
   const user = useSelector(state => state.user.value)
+  const refresh = useSelector(state => state.refresh.value)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -22,16 +23,12 @@ const MyTasksList = () => {
     } else {
       dispatch(removeUser())
     }
-  }, [user, dispatch, myTask])
+  }, [user, refresh, dispatch])
 
   return (
     <div className="col">
-      {myTask &&
-        myTask.map(task => (
-          <div className="col" key={task.id}>
-            <SingleTask task={task} />
-          </div>
-        ))}
+      <div className="col fs-4 fw-bold">My Tasks</div>
+      <List data={myTask} />
     </div>
   )
 }

@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 
 import { setUser } from "../redux/UserReducer"
 
@@ -25,8 +24,8 @@ const Login = () => {
           if (data.code === "validationError") {
             return console.log(data.message)
           } else {
+            return dispatch(setUser(data.payload))
           }
-          return dispatch(setUser(data.payload))
         })
     } catch (err) {
       console.log(err)

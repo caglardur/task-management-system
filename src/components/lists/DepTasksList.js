@@ -2,11 +2,12 @@ import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import { removeUser } from "../../redux/UserReducer"
-import SingleTask from "../single/SingleTask"
+import List from "./List"
 
 const DepTasksList = () => {
   const [depTasks, setDepTasks] = useState(null)
   const user = useSelector(state => state.user.value)
+  const refresh = useSelector(state => state.refresh.value)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -18,20 +19,16 @@ const DepTasksList = () => {
         }
       })
         .then(response => response.json())
-        .then(data => setDepTasks([...data.payload]))
+        .then(data => setDepTasks(data.payload))
     } else {
       dispatch(removeUser())
     }
-  }, [user, dispatch, depTasks])
+  }, [user, refresh, dispatch])
 
   return (
     <div className="col">
-      {depTasks &&
-        depTasks.map(task => (
-          <div className="col" key={task.id}>
-            <SingleTask task={task} />
-          </div>
-        ))}
+      <div className="col fs-4 fw-bold">Department Tasks</div>
+      <List data={depTasks} />
     </div>
   )
 }
