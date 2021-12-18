@@ -42,8 +42,8 @@ const Login = () => {
 
   return (
     <div className="col justify-content-center d-flex" style={{ minHeight: "100vh" }}>
-      <form className="col-3 m-auto border shadow rounded-3 py-2 px-4 bg-light" onSubmit={loginFormHandler}>
-        <div className="col my-3 fs-5 fw-bold">Task Management System</div>
+      <form className="col-xxl-2 col-xl-3 m-auto border shadow rounded-3 py-2 px-4 bg-light" onSubmit={loginFormHandler}>
+        <div className="col my-3 fs-5 fw-bold text-center">Task Management System</div>
         <div className="col my-3">
           <label htmlFor="emailInput" className="form-label">
             Email:
