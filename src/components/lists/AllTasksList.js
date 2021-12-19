@@ -30,6 +30,7 @@ const AllTasksList = () => {
           const filteredData = data.payload.filter(task => checked.includes(task.status))
           setAllTask([...filteredData])
         })
+        .catch(err => console.log(err))
     } else {
       dispatch(removeUser())
     }
