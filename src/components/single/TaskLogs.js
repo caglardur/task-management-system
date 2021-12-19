@@ -8,7 +8,7 @@ const TaskLog = ({ log, i }) => {
         {date.toLocaleDateString()} - {date.toLocaleTimeString().slice(0, 5)}
       </div>
       <div className="col">
-        {log.action} from {log.userName}
+        {log.action} by {log.userName}
       </div>
     </div>
   )
