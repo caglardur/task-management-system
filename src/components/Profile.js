@@ -27,29 +27,29 @@ const Profile = () => {
   return (
     <div className="col">
       {userDetail && (
-        <Link to="mytasks">
-          <div className="row align-items-center">
-            <div className="col-auto">
+        <div className="row align-items-center">
+          <div className="col-auto">
+            <Link to="mytasks">
               <i className="bi bi-person-circle fs-1"></i>
-            </div>
+            </Link>
+          </div>
+          <div className="col-auto">
             <div className="col-auto">
-              <div className="col-auto">
-                Hi, {userDetail.name}
-                <i
-                  type="button"
-                  className="bi bi-box-arrow-right ms-2 text-danger"
-                  onClick={() => {
-                    localStorage.removeItem("userData")
-                    dispatch(removeUser())
-                  }}
-                ></i>
-              </div>
-              <div className="col-auto" style={{ fontSize: "14px" }}>
-                {userDetail.title}
-              </div>
+              <Link to="mytasks">Hi, {userDetail.name}</Link>
+              <i
+                type="button"
+                className="bi bi-box-arrow-right ms-2 text-danger"
+                onClick={() => {
+                  localStorage.removeItem("userData")
+                  dispatch(removeUser())
+                }}
+              ></i>
+            </div>
+            <div className="col-auto" style={{ fontSize: "14px" }}>
+              <Link to="mytasks"> {userDetail.title}</Link>
             </div>
           </div>
-        </Link>
+        </div>
       )}
     </div>
   )
