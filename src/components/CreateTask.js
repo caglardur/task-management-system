@@ -84,10 +84,17 @@ const CreateTask = () => {
             </div>
           )}
 
-          <div className="col text-end">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
+          <div className="row justify-content-end px-0">
+            <div className="col-auto">
+              <button type="button" className="btn btn-sm btn-secondary" onClick={() => navigate(-1)}>
+                Cancel
+              </button>
+            </div>
+            <div className="col-auto">
+              <button type="submit" className="btn btn-sm btn-primary">
+                Submit
+              </button>
+            </div>
           </div>
         </div>
       </form>
