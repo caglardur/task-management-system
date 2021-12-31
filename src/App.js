@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
+import axios from "axios"
 
 import Login from "./components/Login"
 import Main from "./components/Main"
@@ -15,8 +16,14 @@ function App() {
   const user = useSelector(state => state.user.value)
   const userData = localStorage.getItem("userData")
 
+  console.log(user)
+
   if (!user && userData) {
     dispatch(setUser(JSON.parse(userData)))
+  }
+
+  if (user) {
+    axios.defaults.headers.common["Authorization"] = "Bearer " + user.jwtToken
   }
 
   return (

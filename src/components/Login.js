@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux"
+import axios from "axios"
 
 import { setUser } from "../redux/UserReducer"
 
@@ -9,26 +10,17 @@ const Login = () => {
     e.preventDefault()
 
     try {
-      await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
+      await axios
+        .post("http://localhost:5000/api/auth/login", {
           email: e.target.emailInput.value
-        }),
-        withCredentials: false
-      })
+        })
         .then(response => {
-          if (response.ok) {
-            return response.json()
+          if (response.status === 200) {
+            localStorage.setItem("userData", JSON.stringify(response.data.payload))
+            return dispatch(setUser(response.data.payload))
           } else {
             return validationEmail()
           }
-        })
-        .then(data => {
-          localStorage.setItem("userData", JSON.stringify(data.payload))
-          return dispatch(setUser(data.payload))
         })
     } catch (err) {
       console.log(err)

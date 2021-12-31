@@ -1,35 +1,16 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { getMyTasksFetch } from "../../redux/TaskReducer"
 
-import { removeUser } from "../../redux/UserReducer"
 import List from "./List"
 
 const MyTasksList = () => {
-  const [myTask, setMyTask] = useState(null)
-  const user = useSelector(state => state.user.value)
-  const refresh = useSelector(state => state.refresh.value)
+  const myTask = useSelector(state => state.tasks.myTask)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (user && user.jwtToken) {
-      fetch("http://localhost:5000/api/task/my-tasks", {
-        headers: {
-          Authorization: "Bearer " + user.jwtToken,
-          "Content-Type": "application/json"
-        }
-      })
-        .then(response => {
-          if (response.ok) {
-            return response.json()
-          } else {
-            return localStorage.removeItem("userData")
-          }
-        })
-        .then(data => setMyTask(data.payload))
-    } else {
-      dispatch(removeUser())
-    }
-  }, [user, refresh, dispatch])
+    dispatch(getMyTasksFetch())
+  }, [dispatch])
 
   return (
     <div className="col">

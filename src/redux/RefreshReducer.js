@@ -12,7 +12,6 @@ export const RefreshReducer = createSlice({
   }
 })
 
-// Action creators are generated for each case reducer function
 export const { refresh } = RefreshReducer.actions
 
 export default RefreshReducer.reducer
