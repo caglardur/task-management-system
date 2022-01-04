@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import { removeUser } from "../../redux/UserReducer"
 import { refresh } from "../../redux/RefreshReducer"
 import TaskLog from "./TaskLogs"
+import { deleteTaskFetch } from "../../redux/action/TaskAction"
 
 const DetailTask = ({ taskId }) => {
   const user = useSelector(state => state.user.value)
@@ -51,15 +52,7 @@ const DetailTask = ({ taskId }) => {
 
   const deleteTaskHandler = () => {
     try {
-      fetch("http://localhost:5000/api/task/" + taskId, {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + user.jwtToken,
-          "Content-Type": "application/json"
-        }
-      })
-        .then(response => response.json())
-        .then(() => dispatch(refresh()))
+      dispatch(deleteTaskFetch({ taskId }))
     } catch (err) {
       console.log(err)
     }

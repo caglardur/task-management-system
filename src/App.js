@@ -16,8 +16,6 @@ function App() {
   const user = useSelector(state => state.user.value)
   const userData = localStorage.getItem("userData")
 
-  console.log(user)
-
   if (!user && userData) {
     dispatch(setUser(JSON.parse(userData)))
   }

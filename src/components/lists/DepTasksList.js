@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { getDepTasksFetch } from "../../redux/TaskReducer"
 
+import { getDepTasksFetch } from "../../redux/action/TaskAction"
 import List from "./List"
 
 const DepTasksList = () => {

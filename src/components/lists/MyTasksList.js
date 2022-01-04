@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { getMyTasksFetch } from "../../redux/TaskReducer"
 
+import { getMyTasksFetch } from "../../redux/action/TaskAction"
 import List from "./List"
 
 const MyTasksList = () => {

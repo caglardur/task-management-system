@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
-import { getAllTasksFetch } from "../../redux/TaskReducer"
+import { getAllTasksFetch } from "../../redux/action/TaskAction"
+import { setFilter } from "../../redux/FilterReducer"
 import List from "./List"
 
 const AllTasksList = () => {
-  const [checked, setChecked] = useState([0, 1, 2])
+  const checked = useSelector(state => state.filter.value)
   const allTask = useSelector(state => state.tasks.allTask)
   const dispatch = useDispatch()
 
@@ -26,9 +27,9 @@ const AllTasksList = () => {
             defaultChecked={checked.includes(0)}
             onChange={e => {
               if (checked.includes(parseInt(e.target.value))) {
-                setChecked([...checked.filter(i => i !== parseInt(e.target.value))])
+                dispatch(setFilter([...checked.filter(i => i !== parseInt(e.target.value))]))
               } else {
-                setChecked([...checked, parseInt(e.target.value)])
+                dispatch(setFilter([...checked, parseInt(e.target.value)]))
               }
             }}
           />
@@ -45,9 +46,9 @@ const AllTasksList = () => {
             defaultChecked={checked.includes(1)}
             onChange={e => {
               if (checked.includes(parseInt(e.target.value))) {
-                setChecked([...checked.filter(i => i !== parseInt(e.target.value))])
+                dispatch(setFilter([...checked.filter(i => i !== parseInt(e.target.value))]))
               } else {
-                setChecked([...checked, parseInt(e.target.value)])
+                dispatch(setFilter([...checked, parseInt(e.target.value)]))
               }
             }}
           />
@@ -64,9 +65,9 @@ const AllTasksList = () => {
             defaultChecked={checked.includes(2)}
             onChange={e => {
               if (checked.includes(parseInt(e.target.value))) {
-                setChecked([...checked.filter(i => i !== parseInt(e.target.value))])
+                dispatch(setFilter([...checked.filter(i => i !== parseInt(e.target.value))]))
               } else {
-                setChecked([...checked, parseInt(e.target.value)])
+                dispatch(setFilter([...checked, parseInt(e.target.value)]))
               }
             }}
           />
